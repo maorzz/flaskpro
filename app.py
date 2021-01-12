@@ -56,6 +56,17 @@ def addevent():
     return redirect(url_for('events'))
 
 
+@ app.route("/test2", methods=['POST', 'GET'])
+def test2():
+    if request.method == 'POST':
+        my_data = Table.query.get(request.form.get('id'))
+        my_data.name = request.form['name']
+        my_data.desc = request.form['desc']
+        db.session.commit()
+
+        return redirect(url_for('events'))
+
+
 @ app.route("/update/<int:id>",  methods=["GET", "POST"])
 def update(id):
     table_to_update = Table.query.get_or_404(id)
@@ -98,6 +109,19 @@ def delete(id):
         return redirect('/events')
     except:
         return "THERE WAS A PROBLEM"
+
+
+@app.route('/bobo')
+def bobo():
+    return render_template(
+        'bobo.html',
+        data=[{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}])
+
+
+@app.route("/test", methods=['GET', 'POST'])
+def test():
+    select = request.form.get('comp_select')
+    return(str(select))  # just to see what select is
 
 
 if __name__ == "__main__":
